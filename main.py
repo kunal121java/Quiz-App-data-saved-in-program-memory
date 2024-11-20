@@ -1,7 +1,7 @@
 import random
 
 # Define the quiz questions and answers
-Python = {
+PYTHON = {
     1: ["What is the output of print(10/3)?", "3.33", "3", "3.0", "None of the above", "3.33"],
     2: ["What is the purpose of the 'len()' function?", "To find the length of a string",
         "To count the number of elements in a list", "To calculate the area of a shape", "Both A and B",
@@ -41,43 +41,33 @@ DSA = {
         "Binary Search", "Linear Search", "Bubble Sort", "None", "Binary Search"],
 }
 
-# Function to display the banner
 def display_banner():
     print("*******************************")
     print("**  Welcome to Quiz App  **")
     print("*******************************")
 
-
-# Function to register a new user
 def register_user():
     username = input("Enter your username: ")
     password = input("Enter your password: ")
     print("Registration successful!")
 
-
-# Function to login an existing user
 def login_user():
     username = input("Enter your username: ")
     password = input("Enter your password: ")
     print("Login successful!")
 
-
-# Function to display the quiz options
 def display_quiz_options():
     print("Choose a quiz category:")
     print("1. DSA")
     print("2. DBMS")
-    print("3. Python")
+    print("3. PYTHON")
 
-
-# Function to conduct the quiz
 def conduct_quiz(category):
     quiz_data = {
         'DSA': DSA,
         'DBMS': DBMS,
-        'Python': Python
+        'PYTHON': PYTHON
     }
-    # Select 5 random questions from the chosen category
     print(f"\n** Category: {category} **\n")
     questions = random.sample(list(quiz_data[category].keys()), 5)
     score = 0
@@ -90,15 +80,19 @@ def conduct_quiz(category):
         print(f"1. {op1}\n2. {op2}\n3. {op3}\n4. {op4}\n")
 
         user_answer = input("Enter your choice (1-4): ")
-        if user_answer == correct_answer:
-            print("Correct!\n")
-            score += 1
+        
+        if user_answer in ['1', '2', '3', '4']:
+            selected_option = [op1, op2, op3, op4][int(user_answer) - 1]
+            if selected_option == correct_answer:
+                print("Correct!\n")
+                score += 1
+            else:
+                print(f"Incorrect! The correct answer is: {correct_answer}\n")
         else:
-            print(f"Incorrect! The correct answer is: {correct_answer}\n")
+            print("Invalid input. Please enter a number between 1 and 4.\n")
 
     print(f"\n** Quiz completed! Your score: {score}/5 **")
 
-    # Store results in a dictionary
     results = {
         'username': 'User',
         'category': category,
@@ -106,29 +100,20 @@ def conduct_quiz(category):
     }
     return results
 
-# Function to show the results of the quiz
 def show_result():
-    # Load results from a file or a database (you'll need to implement the storage mechanism)
-    results_data = {}  # Load your results data here
-
     if results_data:
-        # Display the results based on the user's choice
         print("Choose the result you want to see:")
         for i, result in enumerate(results_data):
             print(f"{i+1}. {result['category']} - Score: {result['score']}")
         choice = int(input("Enter your choice: "))
         selected_result = results_data[choice - 1]
         print(f"\nUsername: {selected_result['username']}\nCategory: {selected_result['category']}\nScore: {selected_result['score']}\n")
-    # else:
-    #     print("No results found.")
+    else:
+        print("No results found.")
 
-
-# Function to store results
 def store_results(results):
     results_data.append(results)
 
-
-# Main loop of the quiz app
 results_data = []
 while True:
     display_banner()
@@ -154,7 +139,7 @@ while True:
             results = conduct_quiz('DBMS')
             store_results(results)
         elif category_choice == '3':
-            results = conduct_quiz('Python')
+            results = conduct_quiz('PYTHON')
             store_results(results)
         else:
             print("Invalid category choice!")
